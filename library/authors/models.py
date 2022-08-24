@@ -7,3 +7,17 @@ class Author(models.Model):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     birthday_year = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.last_name} | {self.first_name} | {self.birthday_year}'
+        # return f'{self.last_name}'
+
+
+class Biography(models.Model):
+    text = models.TextField(blank=True, null=True)
+    author = models.OneToOneField(Author, on_delete=models.CASCADE)
+
+
+class Book(models.Model):
+    name = models.CharField(max_length=64)
+    authors = models.ManyToManyField(Author)
