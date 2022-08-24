@@ -60,8 +60,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-# ROOT_URLCONF = 'library.urls'
-ROOT_URLCONF = 'library.urls_exam'
+ROOT_URLCONF = 'library.urls'
+# ROOT_URLCONF = 'library.urls_exam'
 
 TEMPLATES = [
     {
@@ -144,6 +144,6 @@ REST_FRAMEWORK = {
 
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 1
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 1
 }

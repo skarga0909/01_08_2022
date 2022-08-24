@@ -2,13 +2,19 @@ import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import AuthorList from "./components/Author";
+import BookList from "./components/Books";
+import NotFound404 from "./components/NotFound404";
+import BooksAuthor from "./components/BooksAuthor";
 import axios from "axios";
+import {HashRouter, BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom';
+
 
 class App extends  React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      'authors': []
+      'authors': [],
+        'books': []
     }
   }
 
@@ -21,30 +27,38 @@ class App extends  React.Component{
         }
     )
     }).catch(error => console.log(error))
-    // const authors = [
-    //   {
-    //     'first_name': 'Фёдор',
-    //     'last_name': 'Достаевский',
-    //     'birthday_year': 1821,
-    //   },
-    //   {
-    //     'first_name': 'Александр',
-    //     'last_name': 'Грин',
-    //     'birthday_year': 1880,
-    //   }
-    //
-    // ]
-    // this.setState(
-    //     {
-    //       'authors':authors
-    //     }
-    // )
+
+    axios.get('http://127.0.0.1:8000/api/books/').then(response =>{
+
+       this.setState(
+        {
+          'books':response.data
+        }
+    )
+    }).catch(error => console.log(error))
   }
 
   render() {
     return (
       <div>
-         <AuthorList authors={this.state.authors}/>
+          <BrowserRouter>
+              <nav>
+                  <ul>
+                      <li> <Link to='/'>Authors</Link></li>
+                      <li> <Link to='/books'>Books</Link></li>
+                  </ul>
+              </nav>
+              <Switch>
+                  <Route exact path='/' component={() => <AuthorList authors={this.state.authors}/>} />
+                  <Route exact path='/books' component={() => <BookList books={this.state.books} />} />
+                  <Route path='/authors'>
+                      <Route index element={<AuthorList authors={this.state.authors} />} />
+                      <Route path=':authorId' element={<BooksAuthor books={this.state.books} />} />
+                  </Route>
+                  <Redirect from='/book' to='/books' />
+                  <Route component={NotFound404} />
+              </Switch>
+          </BrowserRouter>
       </div>
     )
   }
